@@ -2,12 +2,26 @@ package com.example.onlinebank;
 
 import java.util.Objects;
 
+/**
+ * Класс Customer представляет клиента банка.
+ */
 public class Customer {
+
+    // Имя клиента
     private String name;
+
+    // Email клиента (уникальный идентификатор)
     private String email;
+
+    // Телефон клиента
     private String phone;
+
+    // Банковский счет клиента
     private BankAccount account;
 
+    /**
+     * Конструктор клиента.
+     */
     public Customer(String name, String email, String phone, BankAccount account) {
         this.name = name;
         this.email = email;
@@ -15,19 +29,43 @@ public class Customer {
         this.account = account;
     }
 
-    // Getters & Setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    // ===== Getters & Setters =====
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getName() {
+        return name;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public BankAccount getAccount() { return account; }
-    public void setAccount(BankAccount account) { this.account = account; }
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public BankAccount getAccount() {
+        return account;
+    }
+
+    public void setAccount(BankAccount account) {
+        this.account = account;
+    }
+
+    /**
+     * Выводит информацию о клиенте в консоль.
+     */
     public void printInfo() {
         System.out.println("Customer{name='" + name + '\'' +
                 ", email='" + email + '\'' +
@@ -35,6 +73,9 @@ public class Customer {
                 ", account=" + account + "}");
     }
 
+    /**
+     * Строковое представление клиента.
+     */
     @Override
     public String toString() {
         return "Customer{" +
@@ -45,16 +86,22 @@ public class Customer {
                 '}';
     }
 
+    /**
+     * Переопределение equals.
+     * Клиенты считаются одинаковыми, если совпадает email.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Customer customer = (Customer) o;
-        // считаем одинаковыми по email (можно менять на phone)
         return Objects.equals(email, customer.email);
     }
 
+    /**
+     * Переопределение hashCode.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(email);
