@@ -8,12 +8,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Создание банковских счетов
-        BankAccount acc1 = new BankAccount("ACC1001", 1500.0, "Savings");
-        BankAccount acc2 = new BankAccount("ACC1002", 500.0, "Checking");
-        BankAccount acc3 = new BankAccount("ACC1003", 1500.0, "Savings");
+        // Создание счетов
+        BankAccount acc1 = new SavingsAccount("SA001", 1000, 0.05);
+        BankAccount acc2 = new CheckingAccount("CA001", 800, 50);
+        BankAccount acc3 = new SavingsAccount("SA001", 500, 0.05);
 
-        // Создание клиентов
+        // Полиморфизм
+        acc1.applyMonthlyUpdate();
+        acc2.applyMonthlyUpdate();
+
+        // Клиенты
         Customer bob = new Customer(
                 "Bogdan Tkachuk",
                 "mrprofessor228@gmail.com",
@@ -28,7 +32,6 @@ public class Main {
                 acc2
         );
 
-        // Клиент-дубликат с тем же email
         Customer cloneOfBob = new Customer(
                 "Bogdan T.",
                 "mrprofessor228@gmail.com",
@@ -36,31 +39,21 @@ public class Main {
                 acc3
         );
 
-        // Создание банка
+        // Банк
         Bank bank = new Bank("Demo Bank");
-
-        // Добавление клиентов в банк
         bank.addCustomer(bob);
         bank.addCustomer(alice);
-        bank.addCustomer(cloneOfBob); // не добавится (дубликат)
+        bank.addCustomer(cloneOfBob); // не добавится
 
-        // Операции со счетами
-        System.out.println();
-        bob.getAccount().deposit(250.0);
-        alice.getAccount().withdraw(100.0);
-        alice.getAccount().withdraw(1000.0); // недостаточно средств
+        // Операции
+        bob.getAccount().deposit(250);
+        alice.getAccount().withdraw(100);
 
-        // Вывод всех клиентов банка
-        System.out.println();
-        bank.printAllCustomers();
+        // Вывод
+        bank.printAll();
 
-        // Сравнение объектов
-        System.out.println();
-        System.out.println("Is bob equal to cloneOfBob? " + bob.equals(cloneOfBob));
-        System.out.println("Is acc1 equal to acc3 (by account number)? " + acc1.equals(acc3));
-
-        // Вывод балансов
-        System.out.println("Bob's balance: " + bob.getAccount().getBalance());
-        System.out.println("Alice's balance: " + alice.getAccount().getBalance());
+        // equals / hashCode
+        System.out.println("Bob equals cloneOfBob: " + bob.equals(cloneOfBob));
+        System.out.println("acc1 equals acc3: " + acc1.equals(acc3));
     }
 }
