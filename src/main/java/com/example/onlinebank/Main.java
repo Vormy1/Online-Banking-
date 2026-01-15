@@ -1,23 +1,29 @@
 package com.example.onlinebank;
 
 /**
- * Точка входа в программу.
- * Демонстрирует работу банковской системы.
+ * Main class
+ * Demonstrates:
+ * - OOP principles (Assignment 2)
+ * - JDBC + PostgreSQL CRUD operations (Assignment 3)
  */
 public class Main {
 
     public static void main(String[] args) {
 
-        // Создание счетов
-        BankAccount acc1 = new SavingsAccount("SA001", 1000, 0.05);
-        BankAccount acc2 = new CheckingAccount("CA001", 800, 50);
-        BankAccount acc3 = new SavingsAccount("SA001", 500, 0.05);
+        // =========================
+        // ASSIGNMENT 2 — OOP PART
+        // =========================
 
-        // Полиморфизм
+        // Creating bank accounts (abstraction + inheritance)
+        BankAccount acc1 = new SavingsAccount("SA001", 1000, 0.05);
+        BankAccount acc2 = new CheckingAccount("CA002", 800, 50);
+        BankAccount acc3 = new SavingsAccount("SA001", 500, 0.05); // same ID (equals test)
+
+        // Polymorphism (different behavior for same method)
         acc1.applyMonthlyUpdate();
         acc2.applyMonthlyUpdate();
 
-        // Клиенты
+        // Creating customers
         Customer bob = new Customer(
                 "Bogdan Tkachuk",
                 "mrprofessor228@gmail.com",
@@ -32,6 +38,7 @@ public class Main {
                 acc2
         );
 
+        // Duplicate customer (same email)
         Customer cloneOfBob = new Customer(
                 "Bogdan T.",
                 "mrprofessor228@gmail.com",
@@ -39,21 +46,58 @@ public class Main {
                 acc3
         );
 
-        // Банк
+        // Bank aggregation
         Bank bank = new Bank("Demo Bank");
         bank.addCustomer(bob);
         bank.addCustomer(alice);
-        bank.addCustomer(cloneOfBob); // не добавится
+        bank.addCustomer(cloneOfBob); // will NOT be added (equals + hashCode)
 
-        // Операции
+        // Account operations
         bob.getAccount().deposit(250);
         alice.getAccount().withdraw(100);
 
-        // Вывод
+        // Output all customers
         bank.printAll();
 
-        // equals / hashCode
+        // equals / hashCode demonstration
         System.out.println("Bob equals cloneOfBob: " + bob.equals(cloneOfBob));
         System.out.println("acc1 equals acc3: " + acc1.equals(acc3));
+
+
+        // =========================
+        // ASSIGNMENT 3 — DATABASE PART
+        // =========================
+
+        System.out.println("\n--- DATABASE OPERATIONS ---");
+
+        CustomerDAO customerDAO = new CustomerDAO();
+
+        // New objects for database work
+        Customer dbBob = new Customer(
+                "Bogdan Tkachuk",
+                "bob_db@mail.com",
+                "+70000000001",
+                acc1
+        );
+
+        Customer dbAlice = new Customer(
+                "Alice Johnson",
+                "alice_db@mail.com",
+                "+70000000002",
+                acc2
+        );
+
+        // CREATE
+        customerDAO.addCustomer(dbBob);
+        customerDAO.addCustomer(dbAlice);
+
+        // READ
+        customerDAO.printAllCustomers();
+
+        // UPDATE
+        customerDAO.updatePhone("alice_db@mail.com", "+999999999");
+
+        // DELETE
+        customerDAO.deleteByEmail("bob_db@mail.com");
     }
 }
